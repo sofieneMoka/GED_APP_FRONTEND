@@ -90,10 +90,14 @@ body {
 
 .nav > .nav-links > .nav-item {
   display: inline-block;
-  padding: 13px 30px 13px 30px;
+  padding: 10px 30px 13px 30px;
   text-decoration: none;
   color: #ffffff;
   font-weight: 600;
+}
+
+.nav > .nav-links > .nav-item:focus {
+  background-color: rgba(230, 193, 134, 0.5);
 }
 
 .nav > .nav-links > .nav-item:hover {

@@ -224,21 +224,37 @@ export default {
         if (result.isConfirmed) {
           const path = `http://127.0.0.1:5000/DeleteCategory/${_id}`
           axios.delete(path)
+          .then((res) => {
+                if (res.data == "0" ){
+                  this.msg="You cannot delete a category that contains subcategories";
+                  this.showErrorAlert()
+                }
+                if (res.data == "1" ){
+                  Swal.fire(
+                    'Deleted!',
+                    'Category has been deleted.',
+                    'success'
+                  ).then((result) => {
+                    if (result.isConfirmed){
+                      this.getAllCategories();
+                    }
+                  })
+                }
+              })
           .catch(err =>{
           console.log(err);
           });
-          Swal.fire(
-            'Deleted!',
-            'Category has been deleted.',
-            'success'
-          ).then((result) => {
-            if (result.isConfirmed){
-              this.getAllCategories();
-            }
-          })
         }
       })
       },
+      showErrorAlert(){
+      Swal.fire({
+      title: this.msg,
+      text: 'Check the subcategories that are under this category',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    })
+    },
     },created(){
       this.getAllCategories();
     }

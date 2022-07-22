@@ -4,6 +4,7 @@
     <section>
       <div class="header">
         <h1>List of users</h1>
+        <img src="../../../assets/search-icon.png" class="searchIcon">
         <RouterLink to="/AddUser" class="nav-item">
           <button class="button-5" role="button">+ Add new user</button>
         </RouterLink>
@@ -74,6 +75,18 @@ h1{
   margin-bottom: 15px;
 }
 /* CSS */
+.searchIcon{
+  position: absolute;
+  left: 20px;
+  width: 60px;
+  cursor: pointer;
+}
+.searchIcon:hover{
+  width: 70px;
+  transition: all 0.5s ease-out;
+  padding: calc(.875rem - 1px) calc(1.5rem - 15px);
+}
+
 .button-5 {
   align-items: center;
   background-clip: padding-box;
