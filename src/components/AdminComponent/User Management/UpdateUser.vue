@@ -14,13 +14,12 @@
 
     <div class="form-field">
     <select name="role" id="role-select" class="departmentoption" v-model="role">
-        <option value="Role 1">Role 1</option>
-        <option value="Role 2">Role 2</option>
-        <option value="Role 3">Role 3</option>
-        <option value="Role 4">Role 4</option>
-        <option value="Role 5">Role 5</option>
-        <option value="Role 6">Role 6</option>
-    </select>
+          <option 
+            v-for="role in roles.Roles" :key='role.id'
+            :value="role.name">
+            {{role.name}}
+          </option>
+      </select>
   </div>
 
     <div class="form-field">
@@ -164,14 +163,13 @@ export default{
   name:"UpdateUser",
   data(){
     return {
-      User:{
         id:"",
         f_name:"",
         l_name:"",
         role:"",
         status:"",
         msg:"",
-        },
+        roles:[]
       };
     },
     methods:{
@@ -200,7 +198,17 @@ export default{
       }
       })
     },
+      getAllRoles(){
+        const path = `http://127.0.0.1:5000/GetAllRole`
+        axios.get(path).then((res) => {
+          this.roles=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
     },created(){
+            this.getAllRoles();
             this.id = this.$route.params.id;
             this.f_name = this.$route.params.f_name;
             this.l_name = this.$route.params.l_name;

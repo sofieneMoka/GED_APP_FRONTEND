@@ -50,7 +50,7 @@ form .form-field::before {
   background-repeat: no-repeat;
 }
 form .form-field:nth-child(1)::before {
-  background-image: url(../../../assets/user-icon.png);
+  background-image: url(../../../assets/write-icon.png);
   width: 20px;
   height: 20px;
   top: 15px;
@@ -137,13 +137,27 @@ export default{
         axios.post(path, {
           name:this.name,
           })
-        .then(() => {
-            this.showSuccessAlert();
-        })
+        .then((res) => {
+              if (res.data == "0" ){
+                this.msg="Name already exist";
+                this.showErrorAlert()
+              }
+              if (res.data == "1" ){
+                this.showSuccessAlert();
+              }
+            })
         .catch(err =>{
         console.log(err);
         });
       },
+      showErrorAlert(){
+      Swal.fire({
+      title: this.msg,
+      text: 'Pleas try again',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    })
+    },
       showSuccessAlert(){
       Swal.fire({
       title: "Category created successfully",

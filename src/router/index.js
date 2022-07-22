@@ -17,6 +17,12 @@ import AddDirection from '../components/AdminComponent/Direction Management/AddD
 import UpdateDirection from '../components/AdminComponent/Direction Management/UpdateDirection.vue'
 import AddCategory from '../components/AdminComponent/Category Management/AddCategory.vue'
 import UpdateCategory from '../components/AdminComponent/Category Management/UpdateCategory.vue'
+import AddDepartement from '../components/AdminComponent/Departement Management/AddDepartement.vue'
+import UpdateDepartement from '../components/AdminComponent/Departement Management/UpdateDepartement.vue'
+import AddRole from '../components/AdminComponent/Role Management/AddRole.vue'
+import UpdateRole from '../components/AdminComponent/Role Management/UpdateRole.vue'
+import AddSubCategory from '../components/AdminComponent/SubCategory Management/AddSubCategory.vue'
+import UpdateSubCategory from '../components/AdminComponent/SubCategory Management/UpdateSubCategory.vue'
 import VueJwtDecode from "vue-jwt-decode";
 
 
@@ -111,6 +117,36 @@ const routes = [
     path: '/UpdateCategory',
     name: 'UpdateCategory',
     component: UpdateCategory
+  },
+  {
+    path: '/AddDepartement',
+    name: 'AddDepartement',
+    component: AddDepartement
+  },
+  {
+    path: '/UpdateDepartement',
+    name: 'UpdateDepartement',
+    component: UpdateDepartement
+  },
+  {
+    path: '/AddRole',
+    name: 'AddRole',
+    component: AddRole
+  },
+  {
+    path: '/UpdateRole',
+    name: 'UpdateRole',
+    component: UpdateRole
+  },
+  {
+    path: '/AddSubCategory',
+    name: 'AddSubCategory',
+    component: AddSubCategory
+  },
+  {
+    path: '/UpdateSubCategory',
+    name: 'UpdateSubCategory',
+    component: UpdateSubCategory
   },
   { 
     path: '/:pathMatch(.*)*', 

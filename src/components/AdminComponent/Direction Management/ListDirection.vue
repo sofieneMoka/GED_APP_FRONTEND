@@ -224,21 +224,37 @@ export default {
         if (result.isConfirmed) {
           const path = `http://127.0.0.1:5000/DeleteDirection/${_id}`
           axios.delete(path)
+          .then((res) => {
+                if (res.data == "0" ){
+                  this.msg="You cannot delete a direction that contains departements";
+                  this.showErrorAlert()
+                }
+                if (res.data == "1" ){
+                  Swal.fire(
+                    'Deleted!',
+                    'Direction has been deleted.',
+                    'success'
+                  ).then((result) => {
+                    if (result.isConfirmed){
+                      this.getAllDirections();
+                    }
+                  })
+                }
+              })
           .catch(err =>{
           console.log(err);
           });
-          Swal.fire(
-            'Deleted!',
-            'Direction has been deleted.',
-            'success'
-          ).then((result) => {
-            if (result.isConfirmed){
-              this.getAllDirections();
-            }
-          })
         }
       })
       },
+      showErrorAlert(){
+      Swal.fire({
+      title: this.msg,
+      text: 'Check the departements that are under this direction',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    })
+    },
     },created(){
       this.getAllDirections();
     }
