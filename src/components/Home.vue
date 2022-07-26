@@ -14,10 +14,6 @@
   <TableList/>
  </div>
 </div>
-
-<div id="footer">
- Pied de Page
-</div>
 </template>
 
 
@@ -36,11 +32,6 @@ margin:auto;
 }
 #contenu {
 margin-left:20px;
-}
-#footer {
-background-color:#669933;
-text-align:center;
-clear:both;
 }
 </style>
 
