@@ -18,115 +18,29 @@
             >
           </li>
 
-          <span
-            v-for="(menuItem, index) in menuItems"
-            :key="index"
-          >
-            <li v-on:click="seen = !seen">
-              <a :href="menuItem.link">
-                <i class="bx bx-folder" />
-                <span class="Category_name">{{ menuItem.name }}</span>
+          <div class="category_container"
+             v-for="category in categories.Categories" :key='category.id'>
+            <li>
+              <a>
+                <div class="Category_name">
+                  <i class="bx bx-folder" />
+                  <span>{{ category.name }}</span>
+                  <div class="ListSubcategory"
+                  v-for="subcategory in subcategories.SubCategories" :key='subcategory.id'>
+                    <li class="li_Subcategory">
+                      <i class="bx bx-folder" />
+                      <span>{{subcategory.name}}</span>
+                    </li>
+                  </div>
+                </div>
               </a>
             </li>
-            <div v-if="seen">
-                <li>
-                    <span class="Subcategory_name">aaaa{{ menuItem.name }}</span>
-                </li>
-                <li>
-                    <span class="Subcategory_name">bbbbb</span>
-                </li>
-            </div>
-          </span>
+          </div>
         </ul>
       </div>
     </div>
   </div>
 </template>
-
-<script>
-  export default {
-    name: 'SideBar',
-    data(){
-        return{
-            seen:false
-        }
-    },
-    props: {
-
-      //! Menu items
-      menuItems: {
-        type: Array,
-        default: () => [
-          {
-            link: '#',
-            name: 'Dashboard',
-            tooltip: 'Dashboard',
-            icon: 'bx-grid-alt',
-          },
-          {
-            link: '#',
-            name: 'User',
-            tooltip: 'User',
-            icon: 'bx-user',
-          },
-          {
-            link: '#',
-            name: 'Messages',
-            tooltip: 'Messages',
-            icon: 'bx-chat',
-          },
-          {
-            link: '#',
-            name: 'Analytics',
-            tooltip: 'Analytics',
-            icon: 'bx-pie-chart-alt-2',
-          },
-          {
-            link: '#',
-            name: 'File Manager',
-            tooltip: 'Files',
-            icon: 'bx-folder',
-          },
-          {
-            link: '#',
-            name: 'Order',
-            tooltip: 'Order',
-            icon: 'bx-cart-alt',
-          },
-          {
-            link: '#',
-            name: 'Saved',
-            tooltip: 'Saved',
-            icon: 'bx-heart',
-          },
-          {
-            link: '#',
-            name: 'Setting',
-            tooltip: 'Setting',
-            icon: 'bx-cog',
-          },
-          {
-            link: '#',
-            name: 'Setting',
-            tooltip: 'Setting',
-            icon: 'bx-cog',
-          },
-          {
-            link: '#',
-            name: 'Setting',
-            tooltip: 'Setting',
-            icon: 'bx-cog',
-          },
-        ]
-      }
-    },
-    methods:{
-            toggleDropdown (event) {
-                event.currentTarget.classList.toggle('is-active')
-            }
-        }
-  }
-</script>
 
 <style>
   /* Google Font Link */
@@ -153,9 +67,7 @@
     height: 100%;
     min-height: min-content;
     width: 250px;
-    /* overflow-y: auto; */
-    background-color: rgba(230, 193, 134, 0.4);
-    /* padding: 6px 14px 0 14px; */
+    background-color: rgba(230, 193, 134, 0.1);
     z-index: 99;
     border-radius: 0.5rem;
   }
@@ -178,7 +90,6 @@
   .sidebar li .tooltip {
     position: absolute;
     top: -20px;
-    left: calc(100% + 15px);
     z-index: 3;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     padding: 6px 12px;
@@ -203,6 +114,9 @@
     transition: all 0.5s ease;
     background-color: rgb(136, 110, 68);
   }
+  .sidebar input::placeholder{
+    color: rgb(255, 255, 255);
+  }
   .sidebar .bx-search {
     position: absolute;
     top: 50%;
@@ -221,8 +135,17 @@
     background-color: rgba(230, 193, 134, 0.4);
   }
   .sidebar li a:hover {
-    background: rgb(240, 148, 10,0.4);
-    padding-bottom: 50px;
+    background: rgb(240, 148, 10,0.2);
+  }
+  .sidebar .category_container{
+    height: 60px;
+    overflow-y: hidden;
+    overflow-y: scroll;
+  }
+  .sidebar .category_container:hover{
+    max-height: 200px;
+    height: auto;
+    transition: all 0.4s;
   }
   .sidebar li a .Category_name {
     color: white;
@@ -232,11 +155,27 @@
     opacity: 1;
     pointer-events: auto;
     transition: 0.4s;
+    cursor: pointer;
   }
   .sidebar li a:hover .Category_name,
   .sidebar li a:hover i {
     transition: all 0.5s ease;
     color: black;
+  }
+  .sidebar .ListSubcategory{
+    margin-left: 15px;
+    min-height: 60px;
+    width: 180px;
+    border-radius: 1rem;
+  }
+  .sidebar .li_Subcategory{
+    height: 35px;
+    padding-bottom: 3rem;
+    cursor: pointer;
+  }
+  .sidebar .li_Subcategory:hover{
+    background: rgba(182, 126, 43, 0.7);
+    border-radius: 0.5rem;
   }
   .sidebar li i {
     height: 50px;
@@ -244,13 +183,64 @@
     font-size: 18px;
     border-radius: 12px;
   }
-  .my-scroll-active {
+  .my-scroll-active{
     overflow-y: auto;
   }
   #my-scroll {
     overflow-y: auto;
   }
   #my-scroll::-webkit-scrollbar{
-    display:none;
+    border-radius: 10px;
+    height: 5px;
+    width: 5px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+  }
+  .category_container::-webkit-scrollbar{
+    border-radius: 10px;
+    height: 5px;
+    width: 5px;
   }
 </style>
+
+
+
+
+
+<script>
+import axios from 'axios';
+
+  export default {
+    name: 'SideBar',
+    data(){
+      return {
+          categories:[],
+          subcategories:[],
+        };
+      },
+    methods:{
+      getAllCategories(){
+        const path = `http://127.0.0.1:5000/GetAllCategories`
+        axios.get(path).then((res) => {
+          this.categories=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
+      getAllSubCategories(){
+        const path = `http://127.0.0.1:5000/GetAllSubCategory`
+        axios.get(path).then((res) => {
+          this.subcategories=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
+    },
+    created(){
+      this.getAllCategories();
+      this.getAllSubCategories();
+      console.log(this.subcategories)
+    }
+  }
+</script>

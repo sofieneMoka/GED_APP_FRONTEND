@@ -11,7 +11,7 @@
 </div>
 
  <div id="contenu">
-  <TableList/>
+  <DocumentsList/>
  </div>
 </div>
 </template>
@@ -25,27 +25,29 @@ padding:1px 0;
 #Filtrage {
 background-color:#FF9900;
 text-align:center;
+justify-content: center;
+margin-left: 250px;
 }
 #main {
 max-width:960px;
 margin:auto;
 }
-#contenu {
-margin-left:20px;
+#contenu{
+  margin-left: 250px;
 }
 </style>
 
 
 <script>
-import TableList from '../components/TableList.vue';
-import SideBar from '../components/SideBar.vue';
+import DocumentsList from './DocumentsList.vue';
+import SideBar from './SideBar.vue';
 import VueJwtDecode from "vue-jwt-decode";
 
 
 export default {
   name: 'HoMe',
   components: {
-    TableList,
+    DocumentsList,
     SideBar
   },
   data(){
