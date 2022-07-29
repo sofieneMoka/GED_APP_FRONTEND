@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../components/Home.vue'
+import Home from '../components/HomeComponent/Home.vue'
 import Signin from '../components/Signin.vue'
 import Confirm_email from '../components/Confirm_email.vue'
 import ResetPassword from '../components/ResetPassword.vue'
@@ -23,6 +23,8 @@ import AddRole from '../components/AdminComponent/Role Management/AddRole.vue'
 import UpdateRole from '../components/AdminComponent/Role Management/UpdateRole.vue'
 import AddSubCategory from '../components/AdminComponent/SubCategory Management/AddSubCategory.vue'
 import UpdateSubCategory from '../components/AdminComponent/SubCategory Management/UpdateSubCategory.vue'
+import AddDocument from '../components/HomeComponent/AddDocument.vue'
+import UpdateDocument from '../components/HomeComponent/UpdateDocument.vue'
 import VueJwtDecode from "vue-jwt-decode";
 
 
@@ -147,6 +149,16 @@ const routes = [
     path: '/UpdateSubCategory',
     name: 'UpdateSubCategory',
     component: UpdateSubCategory
+  },
+  {
+    path: '/AddDocument',
+    name: 'AddDocument',
+    component: AddDocument
+  },
+  {
+    path: '/UpdateDocument',
+    name: 'UpdateDocument',
+    component: UpdateDocument
   },
   { 
     path: '/:pathMatch(.*)*', 
