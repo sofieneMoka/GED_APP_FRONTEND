@@ -13,8 +13,6 @@
         <tr>
           <th class="thUserImg"></th>
           <th>Name</th>
-          <th>Id Category</th>
-          <th>Id SubCategory</th>
           <th>Creator</th>
           <th>Tags</th>
           <th>Creation date</th>
@@ -29,14 +27,15 @@
         <tr v-for="document in documents.Documents" :key='document.id'>
           <td class="tdUserImg"><img src="../../assets/document-icon.png" class="userimg"/></td>
           <td>{{document.name}}</td>
-          <td>{{document.idCategory}}</td>
-          <td>{{document.idSubCategory}}</td>
-          <td>{{document.creator}}</td>
+          <td>{{document.nameCreator}}</td>
           <td>{{document.tag}}</td>
           <td>{{document.creationDate}}</td>
           <td>
             <div class="action">
-              <RouterLink :to="{name:'UpdateDocument', params:{id:document.id, name:document.name,  nameCategory:document.idCategory}}" class="nav-item">
+              <RouterLink :to="{name:'UpdateDocument', 
+              params:{idDoc:document.id, idUser:getUserDetails().id, name:document.name,  nameSubCategory:document.nameSubCategory, tag:document.tag, status:document.status, description:document.description, note:document.note}}" 
+              class="nav-item"
+              >
                 <button class="button-5 update" role="button">Update</button>
               </RouterLink>
               <button class="button-5 delete" role="button" v-on:click="showDeleteDocument(document.id)">Delete</button>
@@ -115,6 +114,7 @@
 }
 table{
   width:100%;
+  table-layout: fixed;
 }
 .tbl-header{
   border-top-left-radius: 0.5rem;
@@ -139,6 +139,7 @@ th{
   font-size: 15px;
   color: #fff;
   text-transform: uppercase;
+  margin: 0;
 }
 td{
   padding: 5px 0 5px 0;
@@ -148,6 +149,7 @@ td{
   color: #fff;
   border-bottom: solid 1px rgba(255,255,255,0.3);
   background-color: rgba(182, 121, 29, 0.3);
+  
 }
 .action{
   display: inline-flex;
@@ -155,16 +157,18 @@ td{
 .delete{
   background-color: red;
   width: 70px;
+  margin: 0;
 }
 .update{
   background-color: #f0940a;
   width: 70px;
+  margin: 0;
 }
 .userimg{
   height: 40px;
 }
-.tdUserImg,.thUserImg{
-  width: 20px;
+.thUserImg , .tdUserImg{
+  width: 0;
   padding-left: 15px;
 }
 
@@ -200,6 +204,7 @@ section{
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import VueJwtDecode from "vue-jwt-decode";
 
 export default {
   name: 'DocumentsList',
@@ -209,6 +214,15 @@ export default {
       };
     },
     methods:{
+      getUserDetails(){
+        if(localStorage.getItem('token') != null){
+          let token = localStorage.getItem('token');
+          let decode = VueJwtDecode.decode(token);
+          return decode
+        }
+        else
+          return "null"
+      },
       getAllDocuments(){
         const path = `http://127.0.0.1:5000/GetAllDocument`
         axios.get(path).then((res) => {
@@ -250,6 +264,7 @@ export default {
       },
     },created(){
       this.getAllDocuments();
+      this.getUserDetails();
     }
 }
 </script>
