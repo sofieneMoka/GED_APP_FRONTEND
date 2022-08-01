@@ -7,31 +7,44 @@
   <div class="form-field">
     <div class="form-field-item">
       <div class="file-input">
-        <input type="file" id="file" class="file" v-on:change="previewFiles">
+        <input type="file" ref="file" id="file" class="file" v-on:change="handleFileUpload($event)" required>
       </div>    
     </div>
     <div class="form-field-item">
+      <label>Name</label>
       <input type="text" placeholder="Name" class="input" v-model="name" required/>
     </div>
     <div class="form-field-item">
-      <input type="text" placeholder="Status" class="input" v-model="status" required/>
+      <label>Status</label>
+      <select name="status" id="role-select" class="departmentoption" v-model="status" required>
+          <option value="Actif">Available</option>
+          <option value="Blocked">Blocked</option>
+      </select>
     </div>
   </div>
 
   <div class="form-field">
     <div class="form-field-item">
+      <label>Tags</label>
       <input type="text" placeholder="Tags" class="input" v-model="tag" required/>
     </div>
     <div class="form-field-item">
+      <label>Note</label>
       <input type="text" placeholder="Note" class="input" v-model="note" required/>
     </div>
     <div class="form-field-item">
-      <input type="text" placeholder="IdSubcategory" class="input" v-model="idCategory" required/>
+      <label>Subcategory</label>
+      <select name="nameSubCategory" id="role-select" class="departmentoption" v-model="nameSubCategory" required>
+          <option 
+            v-for="subcategory in subcategories.SubCategories" :key='subcategory.id'
+            :value="subcategory.name">{{subcategory.name}}</option>
+      </select>
     </div>
   </div>
 
   <div class="form-field">
     <div class="form-field-item-description">
+      <label>Description</label>
       <textarea  placeholder="Description" class="input" v-model="description" required/>
     </div>
   </div>
@@ -64,6 +77,11 @@ form {
   width: 1000px;
   position: relative;
   margin: auto;
+}
+label{
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
 }
 form .form-field::before {
   font-size: 20px;
@@ -165,20 +183,33 @@ export default{
   name:"AddDocument",
   data(){
     return {
+        idUser:"",
+        idDoc:"",
         name:"",
         status:"",
         tag:"",
         description:"",
         note:"",
-        idCategory:"",
+        nameSubCategory:"",
         file:"",
         msg:"",
+        subcategories:[]
       };
     },
-    methods:{   previewFiles(event) {
-      this.file = event.target.files[0]
+    methods:{   
+      handleFileUpload(event) {
+      this.file = event.target.files[1];
       console.log(this.file);
-   },
+      },
+      getAllSubCategory(){
+        const path = `http://127.0.0.1:5000/GetAllSubCategory`
+        axios.get(path).then((res) => {
+          this.subcategories=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
       AddDocument(){
         let token = localStorage.getItem('token');
         let decode = VueJwtDecode.decode(token);
@@ -192,19 +223,27 @@ export default{
                 Add the form data we need to submit
             */
             formData.append('file', this.file);
+            formData.append('name', this.name);
+            formData.append('status', this.status);
+            formData.append('note', this.note);
+            formData.append('description', this.description);
+            formData.append('tag', this.tag);
+            formData.append('nameSubCategory', this.nameSubCategory);
+
+        const headers = { 'Content-Type': 'multipart/form-data' };
+
         const path = `http://127.0.0.1:5000/UploadDocument/${decode.id}`
-        axios.post(path, {
-          name:this.name,
-          status:this.status,
-          note:this.note,
-          description:this.description,
-          tag:this.tag,
-          idCategory:this.idCategory,
-          file:this.file,
-          headers: {
-        'Content-Type': 'multipart/form-data'
-    }
-          })
+        axios.post(path,
+          // name:this.name,
+          // status:this.status,
+          // note:this.note,
+          // description:this.description,
+          // tag:this.tag,
+          // idSubCategory:this.idSubCategory,
+          // file:this.file,
+          formData,
+          {headers}
+          )
         .then((res) => {
               if (res.data == "0" ){
                 this.msg="Name already exist";
@@ -237,6 +276,8 @@ export default{
       }
       })
     },
+    },created(){
+      this.getAllSubCategory();
     }
 }
 </script>

@@ -5,7 +5,45 @@
 </div>
 <form @submit.prevent="UpdateDocument">
   <div class="form-field">
-    <input type="text" placeholder="Name" v-model="name" required/>
+    <div class="form-field-item">
+      <label>Name</label>
+      <input type="text" placeholder="Name" class="input" v-model="name" required/>
+    </div>
+    <div class="form-field-item">
+      <label>Status</label>
+      <select name="status" id="role-select" class="departmentoption" v-model="status" required>
+          <option value="Actif">Available</option>
+          <option value="Blocked">Blocked</option>
+      </select>
+    </div>
+    <div class="form-field-item">
+      <label>Note</label>
+      <input type="text" placeholder="Note" class="input" v-model="note" required/>
+    </div>
+  </div>
+
+  <div class="form-field">
+    <div class="form-field-item">
+      <label>Tags</label>
+      <input type="text" placeholder="Tags" class="input" v-model="tag" required/>
+    </div>
+    <div class="form-field-item">
+      <label>Subcategory</label>
+      <select name="nameSubCategory" id="role-select" class="departmentoption" v-model="nameSubCategory" required>
+          <option 
+            v-for="subcategory in subcategories.SubCategories" :key='subcategory.id'
+            :value="subcategory.name">{{subcategory.name}}</option>
+      </select>
+    </div>
+    <div class="form-field-item">
+    </div>
+  </div>
+
+  <div class="form-field">
+    <div class="form-field-item-description">
+      <label>Description</label>
+      <textarea  placeholder="Description" class="input" v-model="description" required/>
+    </div>
   </div>
 
   <div class="form-field">
@@ -34,9 +72,14 @@
 }
 
 form {
-  width: 350px;
+  width: 1000px;
   position: relative;
   margin: auto;
+}
+label{
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
 }
 form .form-field::before {
   font-size: 20px;
@@ -48,12 +91,6 @@ form .form-field::before {
   display: block;
   background-size: cover;
   background-repeat: no-repeat;
-}
-form .form-field:nth-child(1)::before {
-  background-image: url(../../assets/write-icon.png);
-  width: 20px;
-  height: 20px;
-  top: 15px;
 }
 form .form-field {
   display: -webkit-box;
@@ -68,13 +105,28 @@ form .form-field {
   margin-bottom: 1rem;
   position: relative;
 }
-
+.form-field-item{
+  width: 300px;
+}
+.form-field-item-description{
+  width: 1000px;
+}
+textarea {
+	line-height: 150%;
+	height: 150px;
+	resize: none;
+  width: 100%;
+  border-radius: 4px;
+}
 .Signup{
   color: #f36d21;
   font-weight: 700;
 }
-
-form input {
+#file{
+  font-size: 16px;
+  font-weight: 500;
+}
+form .input {
   font-family: inherit;
   width: 100%;
   outline: none;
@@ -127,17 +179,36 @@ export default{
   name:"UpdateDocument",
   data(){
     return {
-        id:"",
         name:"",
+        status:"",
+        tag:"",
+        description:"",
+        note:"",
+        nameSubCategory:"",
         msg:"",
+        subcategories:[]
       };
     },
     methods:{
       UpdateDocument(){
-        const path = `http://127.0.0.1:5000/UpdateDocument/${this.id}`
-        axios.put(path, {
-          name:this.name,
-          })
+            /*
+                Initialize the form data
+            */
+            let formData = new FormData();
+
+            /*
+                Add the form data we need to submit
+            */
+            formData.append('name', this.name);
+            formData.append('status', this.status);
+            formData.append('note', this.note);
+            formData.append('description', this.description);
+            formData.append('tag', this.tag);
+            formData.append('nameSubCategory', this.nameSubCategory);
+
+        const path = `http://127.0.0.1:5000/UpdateDocument/${this.idUser}/${this.idDoc}`
+        axios.put(path,
+          formData)
         .then((res) => {
               if (res.data == "0" ){
                 this.msg="Name already exist";
@@ -170,9 +241,25 @@ export default{
       }
       })
     },
+      getAllSubCategory(){
+        const path = `http://127.0.0.1:5000/GetAllSubCategory`
+        axios.get(path).then((res) => {
+          this.subcategories=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
     },created(){
-            this.id = this.$route.params.id;
+            this.getAllSubCategory();
+            this.idDoc = this.$route.params.idDoc;
+            this.idUser = this.$route.params.idUser;
             this.name = this.$route.params.name;
+            this.status = this.$route.params.status;
+            this.tag = this.$route.params.tag;
+            this.description = this.$route.params.description;
+            this.nameSubCategory = this.$route.params.nameSubCategory;
+            this.note = this.$route.params.note;
     }
 }
 </script>
