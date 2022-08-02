@@ -58,7 +58,6 @@
     transition: all 0.5s ease;
   }
   .sidebar {
-    position: relative;
     display: flex;
     flex-direction: column;
     position: fixed;

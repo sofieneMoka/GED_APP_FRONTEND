@@ -25,18 +25,22 @@
 
   <div class="form-field">
     <div class="form-field-item">
-      <label>Tags</label>
-      <input type="text" placeholder="Tags" class="input" v-model="tag" required/>
-    </div>
-    <div class="form-field-item">
       <label>Note</label>
       <input type="text" placeholder="Note" class="input" v-model="note" required/>
+    </div>
+    <div class="form-field-item">
+      <label>Category</label>
+      <select name="nameCategory" id="role-select" class="departmentoption" v-model="nameCategory" @change="GetListSubCategoryByCategory($event.target.value)" required>
+          <option 
+            v-for="category in categories.Categories" :key='category.id'
+            v-bind:value="category.name" >{{category.name}}</option>
+      </select>
     </div>
     <div class="form-field-item">
       <label>Subcategory</label>
       <select name="nameSubCategory" id="role-select" class="departmentoption" v-model="nameSubCategory" required>
           <option 
-            v-for="subcategory in subcategories.SubCategories" :key='subcategory.id'
+            v-for="subcategory in subcategories.SubCategorys" :key='subcategory.id'
             :value="subcategory.name">{{subcategory.name}}</option>
       </select>
     </div>
@@ -46,6 +50,10 @@
     <div class="form-field-item-description">
       <label>Description</label>
       <textarea  placeholder="Description" class="input" v-model="description" required/>
+    </div>
+    <div class="form-field-item">
+      <label>Tags</label>
+      <input type="text" placeholder="Tags" class="input" v-model="tag" required/>
     </div>
   </div>
 
@@ -111,13 +119,11 @@ form .form-field {
   width: 300px;
 }
 .form-field-item-description{
-  width: 1000px;
+  width: 65%;
 }
 textarea {
-	line-height: 150%;
-	height: 150px;
+	height: 100px;
 	resize: none;
-  width: 100%;
   border-radius: 4px;
 }
 .Signup{
@@ -191,15 +197,16 @@ export default{
         description:"",
         note:"",
         nameSubCategory:"",
+        nameCategory:"",
         file:"",
         msg:"",
-        subcategories:[]
+        subcategories:[],
+        categories:[]
       };
     },
     methods:{   
       handleFileUpload(event) {
-      this.file = event.target.files[1];
-      console.log(this.file);
+      this.file = event.target.files[0];
       },
       getAllSubCategory(){
         const path = `http://127.0.0.1:5000/GetAllSubCategory`
@@ -229,18 +236,12 @@ export default{
             formData.append('description', this.description);
             formData.append('tag', this.tag);
             formData.append('nameSubCategory', this.nameSubCategory);
+            formData.append('nameCategory', this.nameCategory);
 
         const headers = { 'Content-Type': 'multipart/form-data' };
 
         const path = `http://127.0.0.1:5000/UploadDocument/${decode.id}`
         axios.post(path,
-          // name:this.name,
-          // status:this.status,
-          // note:this.note,
-          // description:this.description,
-          // tag:this.tag,
-          // idSubCategory:this.idSubCategory,
-          // file:this.file,
           formData,
           {headers}
           )
@@ -276,8 +277,26 @@ export default{
       }
       })
     },
+      getAllCategory(){
+        const path = `http://127.0.0.1:5000/GetAllCategories`
+        axios.get(path).then((res) => {
+          this.categories=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
+      GetListSubCategoryByCategory(event){
+        const path = `http://127.0.0.1:5000/GetListSubCategoryByCategory/${event}`
+        axios.get(path).then((res) => {
+          this.subcategories=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
     },created(){
-      this.getAllSubCategory();
+      this.getAllCategory();
     }
 }
 </script>

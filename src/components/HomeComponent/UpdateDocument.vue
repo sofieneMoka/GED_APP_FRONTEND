@@ -28,14 +28,20 @@
       <input type="text" placeholder="Tags" class="input" v-model="tag" required/>
     </div>
     <div class="form-field-item">
-      <label>Subcategory</label>
-      <select name="nameSubCategory" id="role-select" class="departmentoption" v-model="nameSubCategory" required>
+      <label>Category</label>
+      <select name="nameCategory" id="role-select" class="departmentoption" v-model="nameCategory" @change="GetListSubCategoryByCategory($event.target.value)" required>
           <option 
-            v-for="subcategory in subcategories.SubCategories" :key='subcategory.id'
-            :value="subcategory.name">{{subcategory.name}}</option>
+            v-for="category in categories.Categories" :key='category.id'
+            v-bind:value="category.name" >{{category.name}}</option>
       </select>
     </div>
     <div class="form-field-item">
+      <label>Subcategory</label>
+      <select name="nameSubCategory" id="role-select" class="departmentoption" v-model="nameSubCategory" required>
+          <option 
+            v-for="subcategory in subcategories.SubCategorys" :key='subcategory.id'
+            :value="subcategory.name">{{subcategory.name}}</option>
+      </select>
     </div>
   </div>
 
@@ -113,7 +119,7 @@ form .form-field {
 }
 textarea {
 	line-height: 150%;
-	height: 150px;
+	height: 100px;
 	resize: none;
   width: 100%;
   border-radius: 4px;
@@ -185,8 +191,10 @@ export default{
         description:"",
         note:"",
         nameSubCategory:"",
+        nameCategory:"",
         msg:"",
-        subcategories:[]
+        subcategories:[],
+        categories:[]
       };
     },
     methods:{
@@ -205,6 +213,7 @@ export default{
             formData.append('description', this.description);
             formData.append('tag', this.tag);
             formData.append('nameSubCategory', this.nameSubCategory);
+            formData.append('nameCategory', this.nameCategory);
 
         const path = `http://127.0.0.1:5000/UpdateDocument/${this.idUser}/${this.idDoc}`
         axios.put(path,
@@ -241,8 +250,17 @@ export default{
       }
       })
     },
-      getAllSubCategory(){
-        const path = `http://127.0.0.1:5000/GetAllSubCategory`
+      getAllCategory(){
+        const path = `http://127.0.0.1:5000/GetAllCategories`
+        axios.get(path).then((res) => {
+          this.categories=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
+      GetListSubCategoryByCategory(event){
+        const path = `http://127.0.0.1:5000/GetListSubCategoryByCategory/${event}`
         axios.get(path).then((res) => {
           this.subcategories=res.data
         })
@@ -251,7 +269,8 @@ export default{
         });
       },
     },created(){
-            this.getAllSubCategory();
+            this.GetListSubCategoryByCategory(this.$route.params.nameCategory);
+            this.getAllCategory();
             this.idDoc = this.$route.params.idDoc;
             this.idUser = this.$route.params.idUser;
             this.name = this.$route.params.name;
@@ -259,6 +278,7 @@ export default{
             this.tag = this.$route.params.tag;
             this.description = this.$route.params.description;
             this.nameSubCategory = this.$route.params.nameSubCategory;
+            this.nameCategory = this.$route.params.nameCategory;
             this.note = this.$route.params.note;
     }
 }

@@ -33,7 +33,7 @@
           <td>
             <div class="action">
               <RouterLink :to="{name:'UpdateDocument', 
-              params:{idDoc:document.id, idUser:getUserDetails().id, name:document.name,  nameSubCategory:document.nameSubCategory, tag:document.tag, status:document.status, description:document.description, note:document.note}}" 
+              params:{idDoc:document.id, idUser:getUserDetails().id, name:document.name,  nameCategory:document.nameCategory, nameSubCategory:document.nameSubCategory, tag:document.tag, status:document.status, description:document.description, note:document.note}}" 
               class="nav-item"
               >
                 <button class="button-5 update" role="button">Update</button>
