@@ -6,8 +6,8 @@
  </div>
 
 
-  <div id="Filtrage">
- Partie Filtrage
+<div id="Filtrage">
+    <SearchFilter/>
 </div>
 
  <div id="contenu">
@@ -20,13 +20,15 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #Filtrage, #menu, #contenu, #footer {
-padding:1px 0;
+padding:2px 0;
 }
 #Filtrage {
-background-color:#FF9900;
-text-align:center;
-justify-content: center;
-margin-left: 250px;
+background-color: rgba(230, 193, 134, 0.1);
+margin-left: 10%;
+height: 170px;
+width: 105%;
+border-radius: 0.5rem;
+margin-bottom: -30px;
 }
 #main {
 max-width:960px;
@@ -42,14 +44,16 @@ margin:auto;
 import DocumentsList from './DocumentsList.vue';
 import SideBar from './SideBar.vue';
 import VueJwtDecode from "vue-jwt-decode";
+import SearchFilter from './SearchFilter.vue';
 
 
 export default {
   name: 'HoMe',
   components: {
     DocumentsList,
-    SideBar
-  },
+    SideBar,
+    SearchFilter
+},
   data(){
     return {
       user:{}
