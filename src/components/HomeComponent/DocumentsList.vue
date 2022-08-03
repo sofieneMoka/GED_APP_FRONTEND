@@ -14,8 +14,8 @@
           <th class="thUserImg"></th>
           <th>Name</th>
           <th>Creator</th>
-          <th>Tags</th>
-          <th>Creation date</th>
+          <th>Subcategory</th>
+          <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -24,12 +24,12 @@
   <div class="tbl-content">
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
-        <tr v-for="document in documents.Documents" :key='document.id'>
+        <tr v-for="document in Listdata.Documents" :key='document.id'>
           <td class="tdUserImg"><img src="../../assets/document-icon.png" class="userimg"/></td>
           <td>{{document.name}}</td>
           <td>{{document.nameCreator}}</td>
-          <td>{{document.tag}}</td>
-          <td>{{document.creationDate}}</td>
+          <td>{{document.nameSubCategory}}</td>
+          <td>{{document.status}}</td>
           <td>
             <div class="action">
               <RouterLink :to="{name:'UpdateDocument', 
@@ -39,6 +39,44 @@
                 <button class="button-5 update" role="button">Update</button>
               </RouterLink>
               <button class="button-5 delete" role="button" v-on:click="showDeleteDocument(document.id)">Delete</button>
+              <button class="button-5 detail" role="button" v-on:click="openModel()">Detail</button>
+              <div v-if="myModel">
+                <transition name="model">
+                <div class="modal-mask">
+                  <div class="modal-wrapper">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="wrapper">
+                          <div class="product-img">
+                            <img src="../../assets/document.jpg" height="380" width="327">
+                          </div>
+                          <div class="product-info">
+                            <div class="product-text">
+                              <h1>Document detail</h1>
+                              <button type="button" class="button-5 closeModal" @click="myModel=false"><span aria-hidden="true">&times;</span></button>
+                              <h2>Name : {{document.name}}</h2>
+                              <h2>Format : {{document.format}}</h2>
+                              <h2>Size : {{document.size}}</h2>
+                              <h2>Creator name : {{document.nameCreator}}</h2>
+                              <h2>Status : {{document.status}}</h2>
+                              <h2>Path : {{document.path}}</h2>
+                              <h2>Note : {{document.note}}</h2>
+                              <h2>Tags : {{document.tag}}</h2>
+                              <h2>Desciption : {{document.description}}</h2>
+                              <h2>Category : {{document.nameCategory}}</h2>
+                              <h2>Subcategory : {{document.nameSubCategory}}</h2>
+                              <h2>Creation date : {{document.creationDate}}</h2>
+                              <h2>Last modification : {{document.lastModification}}</h2>
+                              <h2>Name modificator : {{document.nameModificator}}</h2>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                </transition>
+              </div>
             </div>
           </td>
         </tr>
@@ -130,7 +168,7 @@ table{
   overflow-x:auto;
   margin-top: 0px;
   border: 1px solid rgba(255,255,255,0.3);
-  width: 120%;
+  width: 119.8%;
 }
 th{
   padding: 15px 0;
@@ -142,7 +180,7 @@ th{
   margin: 0;
 }
 td{
-  padding: 5px 0 5px 0;
+  padding: 5px -15px 5px -15px;
   text-align: center;
   vertical-align:middle;
   word-wrap: break-word;
@@ -156,20 +194,25 @@ td{
 }
 .delete{
   background-color: red;
-  width: 70px;
+  width: 65px;
   margin: 0;
 }
 .update{
   background-color: #f0940a;
-  width: 70px;
+  width: 65px;
+  margin: 0;
+}
+.detail{
+  background-color: #0a81f0;
+  width: 65px;
   margin: 0;
 }
 .userimg{
-  height: 40px;
+  height: 30px;
 }
 .thUserImg , .tdUserImg{
   width: 0;
-  padding-left: 15px;
+  padding-left: 10px;
 }
 
 
@@ -196,6 +239,146 @@ section{
 ::-webkit-scrollbar-thumb {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
 }
+
+   .modal-mask {
+     position: fixed;
+     z-index: 9998;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(0, 0, 0, .5);
+     display: table;
+     transition: opacity .3s ease;
+   }
+  .modal-content{
+    background-color: #ffffff;
+    border-radius: 1rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+  }
+   .modal-wrapper {
+     display: table-cell;
+     vertical-align: middle;
+   }
+   
+.wrapper {
+  height: 420px;
+  width: 654px;
+  margin: 50px auto;
+  border-radius: 7px 7px 7px 7px;
+  /* VIA CSS MATIC https://goo.gl/cIbnS */
+  -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+}
+
+.product-img {
+  float: left;
+  height: 420px;
+  width: 327px;
+}
+
+.product-img img {
+  border-radius: 7px 0 0 7px;
+}
+
+.product-info {
+  float: left;
+  height: 420px;
+  width: 327px;
+  border-radius: 0 7px 10px 7px;
+  background-color: #ffffff;
+}
+
+.product-text {
+  height: 400px;
+  width: 327px;
+}
+
+.product-text h1 {
+  margin: -20px 0 15px 5px;
+  padding-top: 52px;
+  font-size: 34px;
+  color: #474747;
+}
+
+.product-text h1,
+.product-price-btn p {
+  font-family: 'Bentham', serif;
+}
+
+.product-text h2 {
+  margin: 2px 0 0 25px;
+  font-size: 13px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  color: #585858;
+  letter-spacing: 0.2em;
+  text-align: left;
+}
+
+
+.product-price-btn {
+  height: 103px;
+  width: 327px;
+  margin-top: 17px;
+  position: relative;
+}
+
+.product-price-btn p {
+  display: inline-block;
+  position: absolute;
+  top: -13px;
+  height: 50px;
+  font-family: 'Trocchi', serif;
+  margin: 0 0 0 38px;
+  font-size: 28px;
+  font-weight: lighter;
+  color: #474747;
+}
+
+span {
+  display: inline-block;
+  height: 50px;
+  font-family: 'Suranna', serif;
+  font-size: 34px;
+}
+
+.product-price-btn button {
+  float: right;
+  display: inline-block;
+  height: 50px;
+  width: 176px;
+  margin: 0 40px 0 16px;
+  box-sizing: border-box;
+  border: transparent;
+  border-radius: 60px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #ffffff;
+  background-color: #9cebd5;
+  cursor: pointer;
+  outline: none;
+}
+
+.product-price-btn button:hover {
+  background-color: #79b0a1;
+}
+
+.closeModal{
+  top: 0;
+  right: 0;
+  position: absolute;
+  margin-right: 50px;
+  height: 65px;
+  width: 65px;
+}
 </style>
 
 
@@ -205,15 +388,21 @@ section{
 import axios from 'axios';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import VueJwtDecode from "vue-jwt-decode";
+import 'animate.css';
 
 export default {
   name: 'DocumentsList',
+  props:['Listdata'],
   data(){
     return {
         documents:[],
+        myModel:false,
       };
     },
     methods:{
+      openModel(){
+        this.myModel = true;
+      },
       getUserDetails(){
         if(localStorage.getItem('token') != null){
           let token = localStorage.getItem('token');
@@ -262,6 +451,23 @@ export default {
         }
       })
       },
+      showDetail(x=1){
+      Swal.fire({
+        text: "name : \t" + x + "prenom : " + x,
+        title: "Document detail",
+        confirmButtonText: 'Ok',
+        imageUrl: "https://www.cti-commission.fr/wp-content/uploads/2018/01/my-documents-png-image-24592.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: 'Custom image',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        }
+    })
+    },
     },created(){
       this.getAllDocuments();
       this.getUserDetails();
