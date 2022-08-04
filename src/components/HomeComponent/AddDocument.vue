@@ -3,7 +3,7 @@
 <div class="logoContainer">
   <img src="../../assets/Al_Baraka_Logo_copy.png" class="logo"/>
 </div>
-<form @submit.prevent="AddDocument">
+<form @submit.prevent="AddDocument" enctype="multipart/form-data">
   <div class="form-field">
     <div class="form-field-item">
       <div class="file-input">
@@ -56,7 +56,20 @@
       <input type="text" placeholder="Tags" class="input" v-model="tag" required/>
     </div>
   </div>
-
+  <hr/>
+  <!-- <div class="form-field">
+    <div class="form-field-item">
+      <label>Name</label>
+      <input type="text" placeholder="Name" class="input" v-model="name" required/>
+    </div>
+    <div class="form-field-item">
+      <label>Status</label>
+      <select name="status" id="role-select" class="departmentoption" v-model="status" required>
+          <option value="Actif">Available</option>
+          <option value="Blocked">Blocked</option>
+      </select>
+    </div>
+  </div> -->
   <div class="form-field">
       <button class="btn" type="submit">Submit</button>
   </div>
@@ -229,7 +242,8 @@ export default{
             /*
                 Add the form data we need to submit
             */
-            formData.append('file', this.file);
+            formData.set('file', this.file);
+            console.log(this.file)
             formData.append('name', this.name);
             formData.append('status', this.status);
             formData.append('note', this.note);
@@ -239,7 +253,8 @@ export default{
             formData.append('nameCategory', this.nameCategory);
 
         const headers = { 'Content-Type': 'multipart/form-data' };
-
+        
+        
         const path = `http://127.0.0.1:5000/UploadDocument/${decode.id}`
         axios.post(path,
           formData,

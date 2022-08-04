@@ -16,8 +16,30 @@
     <input type="email" placeholder="Email" v-model="email" required/>
   </div>
 
+    
+    <div class="form-field">
+      <select name="nameDirection" id="role-select" class="departmentoption" v-model="nameDirection" @change="GetListDepartementByDirection($event.target.value)">
+          <option value="" disabled selected>Select direction</option>
+          <option 
+              v-for="direction in directions.Directions" :key='direction.id'
+              v-bind:value="direction.name" >{{direction.name}}</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+    <select name="departement" id="departement-select" class="departmentoption" v-model="departement" @change="GetListRoleByDepartement($event.target.value)">
+        <option value="" disabled selected>Select departement</option>
+        <option 
+          v-for="departement in departements.Departements" :key='departement.id'
+          v-bind:value="departement.name">
+          {{departement.name}}
+        </option>
+    </select>
+  </div>
+
     <div class="form-field">
     <select name="role" id="role-select" class="departmentoption" v-model="role">
+        <option value="" disabled selected>Select role</option>
         <option 
           v-for="role in roles.Roles" :key='role.id'
           :value="role.name">
@@ -176,6 +198,8 @@ export default{
   name:"AddUser",
   data(){
     return {
+        nameDirection:"",
+        nameDepartement:"",
         f_name:"",
         l_name:"",
         role:"",
@@ -183,7 +207,9 @@ export default{
         password:"",
         Conf_password:"",
         msg:"",
-        roles:""
+        roles:[],
+        directions:[],
+        departements:[]
       };
     },
     methods:{
@@ -237,8 +263,26 @@ export default{
       }
       })
     },
-      getAllRoles(){
-        const path = `http://127.0.0.1:5000/GetAllRole`
+      getAllDirections(){
+        const path = `http://127.0.0.1:5000/GetAllDirection`
+        axios.get(path).then((res) => {
+          this.directions=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
+      GetListDepartementByDirection(event){
+        const path = `http://127.0.0.1:5000/GetListDepartementByDirection/${event}`
+        axios.get(path).then((res) => {
+          this.departements=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      },
+      GetListRoleByDepartement(event){
+        const path = `http://127.0.0.1:5000/GetListRoleByDepartement/${event}`
         axios.get(path).then((res) => {
           this.roles=res.data
         })
@@ -247,7 +291,7 @@ export default{
         });
       },
     },created(){
-        this.getAllRoles();
+        this.getAllDirections();
     }
 }
 </script>

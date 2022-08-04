@@ -39,7 +39,7 @@
                 <button class="button-5 update" role="button">Update</button>
               </RouterLink>
               <button class="button-5 delete" role="button" v-on:click="showDeleteDocument(document.id)">Delete</button>
-              <button class="button-5 detail" role="button" v-on:click="openModel()">Detail</button>
+              <button class="button-5 detail" role="button" v-on:click="openModel(document.id)">Detail</button>
               <div v-if="myModel">
                 <transition name="model">
                 <div class="modal-mask">
@@ -48,26 +48,25 @@
                     <div class="modal-content">
                       <div class="wrapper">
                           <div class="product-img">
-                            <img src="../../assets/document.jpg" height="380" width="327">
                           </div>
                           <div class="product-info">
                             <div class="product-text">
                               <h1>Document detail</h1>
                               <button type="button" class="button-5 closeModal" @click="myModel=false"><span aria-hidden="true">&times;</span></button>
-                              <h2>Name : {{document.name}}</h2>
-                              <h2>Format : {{document.format}}</h2>
-                              <h2>Size : {{document.size}}</h2>
-                              <h2>Creator name : {{document.nameCreator}}</h2>
-                              <h2>Status : {{document.status}}</h2>
-                              <h2>Path : {{document.path}}</h2>
-                              <h2>Note : {{document.note}}</h2>
-                              <h2>Tags : {{document.tag}}</h2>
-                              <h2>Desciption : {{document.description}}</h2>
-                              <h2>Category : {{document.nameCategory}}</h2>
-                              <h2>Subcategory : {{document.nameSubCategory}}</h2>
-                              <h2>Creation date : {{document.creationDate}}</h2>
-                              <h2>Last modification : {{document.lastModification}}</h2>
-                              <h2>Name modificator : {{document.nameModificator}}</h2>
+                              <h2>-Name : {{documentDetail.name}}</h2>
+                              <h2>-Format : {{documentDetail.Format}}</h2>
+                              <h2>-Size : {{documentDetail.size}}</h2>
+                              <h2>-Creator name : {{documentDetail.nameCreator}}</h2>
+                              <h2>-Status : {{documentDetail.status}}</h2>
+                              <h2>-Path : {{documentDetail.path}}</h2>
+                              <h2>-Note : {{documentDetail.note}}</h2>
+                              <h2>-Tags : {{documentDetail.tag}}</h2>
+                              <h2>-Desciption : {{documentDetail.description}}</h2>
+                              <h2>-Category : {{documentDetail.nameCategory}}</h2>
+                              <h2>-Subcategory : {{documentDetail.nameSubCategory}}</h2>
+                              <h2>-Creation date : {{documentDetail.creationDate}}</h2>
+                              <h2>-Last modification : {{documentDetail.lastModification}}</h2>
+                              <h2>-Name modificator : {{documentDetail.nameModificator}}</h2>
                             </div>
                           </div>
                         </div>
@@ -252,12 +251,12 @@ section{
      transition: opacity .3s ease;
    }
   .modal-content{
-    background-color: #ffffff;
     border-radius: 1rem;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
+    width: 60%;
+    background-color: rgba(230, 193, 134, 0.4);
   }
    .modal-wrapper {
      display: table-cell;
@@ -266,8 +265,6 @@ section{
    
 .wrapper {
   height: 420px;
-  width: 654px;
-  margin: 50px auto;
   border-radius: 7px 7px 7px 7px;
   /* VIA CSS MATIC https://goo.gl/cIbnS */
   -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
@@ -276,9 +273,12 @@ section{
 }
 
 .product-img {
-  float: left;
+  float: right;
   height: 420px;
-  width: 327px;
+  width: 270px;
+  background-image: url('../../assets/document.jpg');
+  background-size: cover;
+  border-radius: 0px 7px 7px 0px;
 }
 
 .product-img img {
@@ -286,23 +286,19 @@ section{
 }
 
 .product-info {
-  float: left;
   height: 420px;
-  width: 327px;
-  border-radius: 0 7px 10px 7px;
-  background-color: #ffffff;
+  width: 550px;
+  border-radius: 7px 7px 10px 7px;
 }
 
-.product-text {
-  height: 400px;
-  width: 327px;
-}
+
 
 .product-text h1 {
-  margin: -20px 0 15px 5px;
-  padding-top: 52px;
+  margin: -20px 0 35px -35px;
+  padding-top: 32px;
   font-size: 34px;
-  color: #474747;
+  font-weight: 700;
+  color: #000000;
 }
 
 .product-text h1,
@@ -315,7 +311,7 @@ section{
   font-size: 13px;
   font-family: 'Raleway', sans-serif;
   font-weight: 600;
-  color: #585858;
+  color: #000000;
   letter-spacing: 0.2em;
   text-align: left;
 }
@@ -388,20 +384,27 @@ span {
 import axios from 'axios';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import VueJwtDecode from "vue-jwt-decode";
-import 'animate.css';
 
 export default {
   name: 'DocumentsList',
   props:['Listdata'],
   data(){
     return {
+        documentDetail:"",
         documents:[],
         myModel:false,
       };
     },
     methods:{
-      openModel(){
+      openModel(IdDocument){
         this.myModel = true;
+        const path = `http://127.0.0.1:5000/GetDocumentDetails/${IdDocument}`
+        axios.get(path).then((res) => {
+          this.documentDetail=res.data
+        })
+        .catch(err =>{
+        console.log(err);
+        });
       },
       getUserDetails(){
         if(localStorage.getItem('token') != null){

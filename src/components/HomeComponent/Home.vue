@@ -6,10 +6,7 @@
 
  <div id="menu">
   
-  <div
-    class="sidebar open"
-    :style="cssVars"
-  >
+  <div class="sidebar open">
 
     <div style="display: flex ; flex-direction:column; justify-content: space-between; flex-grow: 1; max-height: calc(100% - 80px); ">
       <div
@@ -19,10 +16,10 @@
         <ul class="nav-list">
           <li>
             <i class="bx bx-search" />
-            <input
+              <input
               type="text"
               placeholder="Search..."
-            >
+              >
           </li>
 
           <div class="category_container"
