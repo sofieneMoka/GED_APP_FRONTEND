@@ -272,6 +272,7 @@ export default{
             this.GetListSubCategoryByCategory(this.$route.params.nameCategory);
             this.getAllCategory();
             this.idDoc = this.$route.params.idDoc;
+            console.log(this.idDoc)
             this.idUser = this.$route.params.idUser;
             this.name = this.$route.params.name;
             this.status = this.$route.params.status;

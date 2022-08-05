@@ -90,7 +90,7 @@ body {
 
 .nav > .nav-links > .nav-item {
   display: inline-block;
-  padding: 10px 30px 13px 30px;
+  padding: 10px 30px 9px 30px;
   text-decoration: none;
   color: #ffffff;
   font-weight: 600;
