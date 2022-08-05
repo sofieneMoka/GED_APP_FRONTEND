@@ -25,6 +25,7 @@ import AddSubCategory from '../components/AdminComponent/SubCategory Management/
 import UpdateSubCategory from '../components/AdminComponent/SubCategory Management/UpdateSubCategory.vue'
 import AddDocument from '../components/HomeComponent/AddDocument.vue'
 import UpdateDocument from '../components/HomeComponent/UpdateDocument.vue'
+import ViewDocument from '../components/HomeComponent/ViewDocument.vue'
 import VueJwtDecode from "vue-jwt-decode";
 
 
@@ -159,6 +160,11 @@ const routes = [
     path: '/UpdateDocument',
     name: 'UpdateDocument',
     component: UpdateDocument
+  },
+  {
+    path: '/ViewDocument',
+    name: 'ViewDocument',
+    component: ViewDocument
   },
   { 
     path: '/:pathMatch(.*)*', 

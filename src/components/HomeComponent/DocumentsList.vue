@@ -25,7 +25,7 @@
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
         <tr v-for="document in Listdata.Documents" :key='document.id'>
-          <td class="tdUserImg"><img src="../../assets/document-icon.png" class="userimg"/></td>
+          <td class="tdUserImg" v-on:click="this.$router.push('/ViewDocument')"><img src="../../assets/document-icon.png" class="userimg"/></td>
           <td>{{document.name}}</td>
           <td>{{document.nameCreator}}</td>
           <td>{{document.nameSubCategory}}</td>
@@ -208,6 +208,10 @@ td{
 }
 .userimg{
   height: 30px;
+  cursor: pointer;
+}
+.userimg:hover{
+  height: 35px;
 }
 .thUserImg , .tdUserImg{
   width: 0;
