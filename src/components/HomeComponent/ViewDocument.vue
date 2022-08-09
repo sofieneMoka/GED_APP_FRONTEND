@@ -4,7 +4,7 @@
     Open PDF
     </label>
     <input id="file-upload" type="file" @change="openDocument" class="btn" /> -->
-    <PSPDFKitContainer :pdfFile="pdfFile" @loaded="handleLoaded"/>
+    <PSPDFKitContainer :idDoc="idDoc" :pdfFile="pdfFile" @loaded="handleLoaded"/>
   </div>
 </template>
 
@@ -15,7 +15,6 @@ export default {
   name : 'ViewDocument',
   data() {
     return {
-      pdfFile: this.pdfFile || "../../../../../lettre de motivation .pdf",
     };
   },
   /**
@@ -41,7 +40,13 @@ export default {
     //   this.pdfFile = window.URL.createObjectURL(event.target.files[0]);
     //   console.log(this.pdfFile)
     // },
-  },
+  },created(){
+    this.category="category 3"
+    this.subcategory="subcategory 2.1"
+    this.filename="ouloulou.jpg"
+    this.pdfFile= this.$route.params.file
+    this.idDoc = this.$route.params.idDoc
+  }
 };
 </script>
 
