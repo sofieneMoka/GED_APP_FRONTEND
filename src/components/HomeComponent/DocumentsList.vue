@@ -25,7 +25,7 @@
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
         <tr v-for="document in Listdata.Documents" :key='document.id'>
-          <td class="tdUserImg" v-on:click="this.$router.push('/ViewDocument')"><img src="../../assets/document-icon.png" class="userimg"/></td>
+          <td class="tdUserImg" v-on:click="this.getDocument(document.id)"><img src="../../assets/document-icon.png" class="userimg"/></td>
           <td>{{document.name}}</td>
           <td>{{document.nameCreator}}</td>
           <td>{{document.nameSubCategory}}</td>
@@ -394,6 +394,7 @@ export default {
   props:['Listdata'],
   data(){
     return {
+        file:"",
         documentDetail:"",
         documents:[],
         myModel:false,
@@ -458,23 +459,20 @@ export default {
         }
       })
       },
-      showDetail(x=1){
-      Swal.fire({
-        text: "name : \t" + x + "prenom : " + x,
-        title: "Document detail",
-        confirmButtonText: 'Ok',
-        imageUrl: "https://www.cti-commission.fr/wp-content/uploads/2018/01/my-documents-png-image-24592.png",
-        imageWidth: 150,
-        imageHeight: 150,
-        imageAlt: 'Custom image',
-        showClass: {
-          popup: 'animate__animated animate__fadeInDown'
-        },
-        hideClass: {
-          popup: 'animate__animated animate__fadeOutUp'
-        }
-    })
-    },
+      getDocument(_idDoc){
+        axios({
+                url: `http://127.0.0.1:5000/getDocument/${_idDoc}`,
+                method: 'GET',
+                responseType: 'blob',
+              })
+        .then((res) => {
+          this.file = window.URL.createObjectURL(new Blob([res.data]));
+          this.$router.push({ name: 'ViewDocument', params: { file: this.file, idDoc:_idDoc } })
+        })
+        .catch(err =>{
+        console.log(err);
+        });
+      }
     },created(){
       this.getAllDocuments();
       this.getUserDetails();

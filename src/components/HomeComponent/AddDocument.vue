@@ -7,7 +7,7 @@
   <div class="form-field">
     <div class="form-field-item">
       <div class="file-input">
-        <input type="file" ref="file" id="file" class="file" v-on:change="handleFileUpload($event)" required>
+        <input type="file" ref="file" id="file" class="file" v-on:change="handleFileUpload($event)"  accept="application/pdf" required>
       </div>    
     </div>
     <div class="form-field-item">
@@ -213,6 +213,7 @@ export default{
         nameCategory:"",
         file:"",
         msg:"",
+        size:"",
         subcategories:[],
         categories:[]
       };
@@ -220,6 +221,7 @@ export default{
     methods:{   
       handleFileUpload(event) {
       this.file = event.target.files[0];
+      console.log(this.file)
       },
       getAllSubCategory(){
         const path = `http://127.0.0.1:5000/GetAllSubCategory`
@@ -242,8 +244,11 @@ export default{
             /*
                 Add the form data we need to submit
             */
+            this.size = this.file.size,
+
             formData.set('file', this.file);
             console.log(this.file)
+            formData.set('size', this.size);
             formData.append('name', this.name);
             formData.append('status', this.status);
             formData.append('note', this.note);
@@ -252,13 +257,18 @@ export default{
             formData.append('nameSubCategory', this.nameSubCategory);
             formData.append('nameCategory', this.nameCategory);
 
-        const headers = { 'Content-Type': 'multipart/form-data' };
+
+        // const headers = { 'Content-Type': 'multipart/form-data' };
         
         
         const path = `http://127.0.0.1:5000/UploadDocument/${decode.id}`
         axios.post(path,
           formData,
-          {headers}
+          {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          }
           )
         .then((res) => {
               if (res.data == "0" ){

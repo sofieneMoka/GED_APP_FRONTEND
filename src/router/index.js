@@ -162,7 +162,7 @@ const routes = [
     component: UpdateDocument
   },
   {
-    path: '/ViewDocument',
+    path: '/ViewDocument/:idDoc',
     name: 'ViewDocument',
     component: ViewDocument
   },

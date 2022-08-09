@@ -4,6 +4,8 @@
 
 <script>
 import PSPDFKit from "pspdfkit";
+// import axios from 'axios';
+// import VueJwtDecode from "vue-jwt-decode";
 
 /**
  * PSPDFKit for Web example component.
@@ -14,6 +16,10 @@ export default {
 	 * The component receives `pdfFile` as a prop, which is type of `String` and is required.
 	 */
   props: {
+    idDoc: {
+      type: String,
+      required: true,
+    },
     pdfFile: {
       type: String,
       required: true,
@@ -25,6 +31,7 @@ export default {
   mounted() {
     this.loadPSPDFKit().then((instance) => {
       this.$emit("loaded", instance);
+      
     });
   },
   /**
@@ -42,11 +49,25 @@ export default {
 	 */
   methods: {
     async loadPSPDFKit() {
+
+      const item = {
+        type: "custom",
+        id: "my-button",
+        title: "Save",
+        onPress: () => {
+            console.log("aaaaaaaa")
+
+        }
+      };
+
+      
       PSPDFKit.unload(".pdf-container");
       return PSPDFKit.load({
         // access the pdfFile from props
         document: this.pdfFile,
         container: ".pdf-container",
+        
+        toolbarItems: [...PSPDFKit.defaultToolbarItems, item]
       });
     },
   },
