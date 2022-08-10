@@ -247,7 +247,6 @@ export default{
             this.size = this.file.size,
 
             formData.set('file', this.file);
-            console.log(this.file)
             formData.set('size', this.size);
             formData.append('name', this.name);
             formData.append('status', this.status);

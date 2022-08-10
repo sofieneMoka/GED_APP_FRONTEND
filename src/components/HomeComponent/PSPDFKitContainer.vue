@@ -4,8 +4,6 @@
 
 <script>
 import PSPDFKit from "pspdfkit";
-// import axios from 'axios';
-// import VueJwtDecode from "vue-jwt-decode";
 
 /**
  * PSPDFKit for Web example component.
@@ -31,7 +29,6 @@ export default {
   mounted() {
     this.loadPSPDFKit().then((instance) => {
       this.$emit("loaded", instance);
-      
     });
   },
   /**
@@ -49,27 +46,14 @@ export default {
 	 */
   methods: {
     async loadPSPDFKit() {
-
-      const item = {
-        type: "custom",
-        id: "my-button",
-        title: "Save",
-        onPress: () => {
-            console.log("aaaaaaaa")
-
-        }
-      };
-
-      
       PSPDFKit.unload(".pdf-container");
       return PSPDFKit.load({
         // access the pdfFile from props
         document: this.pdfFile,
         container: ".pdf-container",
-        
-        toolbarItems: [...PSPDFKit.defaultToolbarItems, item]
       });
     },
+    
   },
 
   /**
